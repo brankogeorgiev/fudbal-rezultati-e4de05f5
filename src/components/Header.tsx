@@ -1,15 +1,18 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Trophy, User, LogOut, Shield } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Trophy, User, LogOut, Shield, ArrowLeftRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import AuthDialog from "@/components/AuthDialog";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useSeason } from "@/hooks/useSeasons";
 import { toast } from "sonner";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { seasonId } = useParams<{ seasonId: string }>();
+  const { data: season } = useSeason(seasonId);
   const [authOpen, setAuthOpen] = useState(false);
   const { user, isAdmin, loading, signOut } = useAuth();
   const { t } = useLanguage();
