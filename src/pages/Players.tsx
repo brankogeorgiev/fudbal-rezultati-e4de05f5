@@ -18,6 +18,9 @@ import {
   type Player,
 } from "@/hooks/usePlayers";
 import { useTeams } from "@/hooks/useMatches";
+import { useCurrentSeason } from "@/hooks/useSeasons";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Players = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -28,9 +31,38 @@ const Players = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const { seasonId } = useParams<{ seasonId: string }>();
+  const { data: season } = useCurrentSeason();
 
   const { data: players, isLoading: playersLoading } = usePlayers();
   const { data: teams, isLoading: teamsLoading } = useTeams();
+
+  // Fetch player IDs that participated in matches within the season range
+  const { data: seasonPlayerIds } = useQuery({
+    queryKey: ["season-player-ids", season?.id],
+    enabled: !!season,
+    queryFn: async () => {
+      if (!season) return new Set<string>();
+      const { data: matches, error: mErr } = await supabase
+        .from("matches")
+        .select("id")
+        .gte("match_date", season.start_date)
+        .lte("match_date", season.end_date);
+      if (mErr) throw mErr;
+      const matchIds = (matches || []).map((m: any) => m.id);
+      if (matchIds.length === 0) return new Set<string>();
+      const { data: mps, error: mpErr } = await supabase
+        .from("match_players")
+        .select("player_id")
+        .in("match_id", matchIds);
+      if (mpErr) throw mpErr;
+      return new Set((mps || []).map((r: any) => r.player_id));
+    },
+  });
+
+  const filteredPlayers = players?.filter((p) =>
+    seasonPlayerIds ? seasonPlayerIds.has(p.id) : true
+  );
+
   const createPlayer = useCreatePlayer();
   const updatePlayer = useUpdatePlayer();
   const deletePlayer = useDeletePlayer();
