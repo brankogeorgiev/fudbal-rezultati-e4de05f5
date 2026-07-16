@@ -114,7 +114,7 @@ const Players = () => {
                 defaultTeamName={player.default_team?.name}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
-                onOpen={(id) => navigate(`/player/${id}`)}
+                onOpen={(id) => navigate(`/s/${seasonId}/player/${id}`)}
                 showActions={isAdmin}
               />
 

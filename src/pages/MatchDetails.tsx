@@ -113,7 +113,7 @@ const MatchDetails = () => {
       <div className="min-h-screen bg-background pb-20">
         <Header />
         <main className="container max-w-lg mx-auto px-4 py-6">
-          <Button variant="ghost" onClick={() => navigate("/")} className="gap-2 mb-6">
+          <Button variant="ghost" onClick={() => navigate(seasonId ? `/s/${seasonId}` : "/")} className="gap-2 mb-6">
             <ArrowLeft className="w-4 h-4" />
             {t("back")}
           </Button>
@@ -178,7 +178,7 @@ const MatchDetails = () => {
       <main className="container max-w-lg mx-auto px-4 py-6">
         {/* Back button */}
         <div className="flex items-center mb-6">
-          <Button variant="ghost" onClick={() => navigate("/")} className="gap-2">
+          <Button variant="ghost" onClick={() => navigate(seasonId ? `/s/${seasonId}` : "/")} className="gap-2">
             <ArrowLeft className="w-4 h-4" />
             {t("back")}
           </Button>
@@ -262,7 +262,7 @@ const MatchDetails = () => {
                     groupedHomeGoals.map(({ playerId, name, count, ownGoal }) => (
                       <button
                         key={`home-${playerId}-${ownGoal}`}
-                        onClick={() => playerId && navigate(`/player/${playerId}`)}
+                        onClick={() => playerId && navigate(`/s/${seasonId}/player/${playerId}`)}
                         className={`flex items-center gap-2 rounded-full px-3 py-1.5 w-full text-left min-w-0 hover:bg-muted/70 transition-colors ${
                           ownGoal ? "bg-destructive/20 border-2 border-destructive/50" : "bg-muted"
                         }`}
@@ -291,7 +291,7 @@ const MatchDetails = () => {
                     groupedAwayGoals.map(({ playerId, name, count, ownGoal }) => (
                       <button
                         key={`away-${playerId}-${ownGoal}`}
-                        onClick={() => playerId && navigate(`/player/${playerId}`)}
+                        onClick={() => playerId && navigate(`/s/${seasonId}/player/${playerId}`)}
                         className={`flex items-center gap-2 rounded-full px-3 py-1.5 w-full text-left min-w-0 hover:bg-muted/70 transition-colors ${
                           ownGoal ? "bg-destructive/20 border-2 border-destructive/50" : "bg-muted"
                         }`}

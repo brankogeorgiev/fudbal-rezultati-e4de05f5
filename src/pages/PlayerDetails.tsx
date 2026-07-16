@@ -178,7 +178,7 @@ const PlayerDetails = () => {
               return (
                 <button
                   key={row.matchId}
-                  onClick={() => navigate(`/match/${row.matchId}`)}
+                  onClick={() => navigate(`/s/${seasonId}/match/${row.matchId}`)}
                   className="result-card w-full text-left animate-fade-in"
                 >
                   <div className="flex items-center gap-3">
