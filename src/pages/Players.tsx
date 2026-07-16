@@ -138,8 +138,8 @@ const Players = () => {
                 </div>
               </div>
             ))
-          ) : players && players.length > 0 ? (
-            players.map((player) => (
+          ) : filteredPlayers && filteredPlayers.length > 0 ? (
+            filteredPlayers.map((player) => (
               <PlayerCard
                 key={player.id}
                 id={player.id}
