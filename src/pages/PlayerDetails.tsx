@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useCurrentSeason } from "@/hooks/useSeasons";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 interface PlayerMatchRow {
