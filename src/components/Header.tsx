@@ -36,11 +36,23 @@ const Header = () => {
             </div>
             <div>
               <h1 className="font-display font-bold text-lg text-foreground">{t("football")}</h1>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">{t("resultsSystem")}</p>
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                {season?.name ?? t("resultsSystem")}
+              </p>
             </div>
           </div>
 
           <div className="flex items-center gap-1">
+            {seasonId && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => navigate("/")}
+                title={t("changeSeason")}
+              >
+                <ArrowLeftRight className="w-5 h-5" />
+              </Button>
+            )}
             <LanguageSwitcher />
             {!loading && (
               <>
