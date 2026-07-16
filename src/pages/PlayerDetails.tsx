@@ -131,6 +131,12 @@ const PlayerDetails = () => {
     enabled: !!id,
   });
 
+  const { data: season } = useCurrentSeason();
+  const filteredRows = rows?.filter((r) => {
+    if (!season) return true;
+    return r.matchDate >= season.start_date && r.matchDate <= season.end_date;
+  });
+
   const isLoading = playerLoading || rowsLoading;
 
   return (
