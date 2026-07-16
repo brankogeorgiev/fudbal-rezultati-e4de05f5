@@ -13,8 +13,9 @@ import ViewOnlyPitch from "@/components/ViewOnlyPitch";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const MatchDetails = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, seasonId } = useParams<{ id: string; seasonId: string }>();
   const navigate = useNavigate();
+  const backTo = seasonId ? `/s/${seasonId}` : "/";
   const { data: allPlayers } = usePlayers();
   const { t } = useLanguage();
 
