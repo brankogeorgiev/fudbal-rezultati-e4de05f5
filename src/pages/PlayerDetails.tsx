@@ -174,8 +174,8 @@ const PlayerDetails = () => {
             Array.from({ length: 4 }).map((_, i) => (
               <Skeleton key={i} className="h-20 w-full rounded-lg" />
             ))
-          ) : rows && rows.length > 0 ? (
-            rows.map((row) => {
+          ) : filteredRows && filteredRows.length > 0 ? (
+            filteredRows.map((row) => {
               const result = getResult(row);
               const resultColor =
                 result === "W" ? "bg-green-500" : result === "L" ? "bg-red-500" : "bg-muted-foreground";
