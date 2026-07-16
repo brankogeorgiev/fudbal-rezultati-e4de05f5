@@ -180,6 +180,23 @@ export const translations = {
     makeAdmin: "Направи админ",
     noOtherUsers: "Нема други корисници",
     cannotRemoveOwnAdmin: "Не можете да ја отстраните сопствената администраторска улога",
+
+    // Seasons
+    chooseSeason: "Избери сезона",
+    chooseSeasonSubtitle: "Изберете сезона за да ги видите резултатите и статистиките",
+    seasons: "Сезони",
+    seasonName: "Име на сезона",
+    startDate: "Почетен датум",
+    endDate: "Краен датум",
+    manageSeasons: "Управувај со сезони",
+    newSeason: "Нова сезона",
+    editSeason: "Измени сезона",
+    deleteSeason: "Избриши сезона",
+    deleteSeasonDescription: "Дали сте сигурни дека сакате да ја избришете оваа сезона? Натпреварите нема да бидат избришани.",
+    noSeasonsYet: "Сè уште нема сезони",
+    createFirstSeason: "Креирај прва сезона",
+    current: "Тековна",
+    changeSeason: "Промени сезона",
   },
   en: {
     // Header
@@ -362,6 +379,23 @@ export const translations = {
     makeAdmin: "Make Admin",
     noOtherUsers: "No other users",
     cannotRemoveOwnAdmin: "You cannot remove your own admin role",
+
+    // Seasons
+    chooseSeason: "Choose a season",
+    chooseSeasonSubtitle: "Select a season to view its results and statistics",
+    seasons: "Seasons",
+    seasonName: "Season name",
+    startDate: "Start date",
+    endDate: "End date",
+    manageSeasons: "Manage seasons",
+    newSeason: "New season",
+    editSeason: "Edit season",
+    deleteSeason: "Delete season",
+    deleteSeasonDescription: "Are you sure you want to delete this season? Matches will not be deleted.",
+    noSeasonsYet: "No seasons yet",
+    createFirstSeason: "Create your first season",
+    current: "Current",
+    changeSeason: "Change season",
   },
 } as const;
 
