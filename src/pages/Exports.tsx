@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import Header from "@/components/Header";
 import BottomNav from "@/components/BottomNav";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { useCurrentSeason } from "@/hooks/useSeasons";
 
 interface ExportFile {
   name: string;
