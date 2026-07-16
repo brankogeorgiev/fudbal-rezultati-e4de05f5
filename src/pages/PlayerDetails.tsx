@@ -27,7 +27,7 @@ interface PlayerMatchRow {
 }
 
 const PlayerDetails = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, seasonId } = useParams<{ id: string; seasonId: string }>();
   const navigate = useNavigate();
   const { t } = useLanguage();
 

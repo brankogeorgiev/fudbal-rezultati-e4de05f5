@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Plus } from "lucide-react";
 import Header from "@/components/Header";
 import BottomNav from "@/components/BottomNav";
@@ -27,6 +27,7 @@ const Players = () => {
   const { user, isAdmin } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { seasonId } = useParams<{ seasonId: string }>();
 
   const { data: players, isLoading: playersLoading } = usePlayers();
   const { data: teams, isLoading: teamsLoading } = useTeams();
