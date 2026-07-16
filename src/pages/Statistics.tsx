@@ -23,6 +23,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useMatches, useTeams } from "@/hooks/useMatches";
 import { usePlayers } from "@/hooks/usePlayers";
+import { useCurrentSeason } from "@/hooks/useSeasons";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/i18n/LanguageContext";
@@ -81,7 +82,12 @@ const Statistics = () => {
   const [showAllScorers, setShowAllScorers] = useState(false);
   const [showAllOwnGoals, setShowAllOwnGoals] = useState(false);
 
-  const { data: matches, isLoading: matchesLoading } = useMatches();
+  const { data: season } = useCurrentSeason();
+  const seasonRange = season
+    ? { startDate: season.start_date, endDate: season.end_date }
+    : null;
+
+  const { data: matches, isLoading: matchesLoading } = useMatches(seasonRange);
   const { data: teams, isLoading: teamsLoading } = useTeams();
   const { data: players, isLoading: playersLoading } = usePlayers();
   const { data: allGoals, isLoading: goalsLoading } = useAllGoals();
