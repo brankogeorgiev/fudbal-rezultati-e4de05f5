@@ -1,0 +1,1 @@
+UPDATE public.seasons SET name = 'Season ' || EXTRACT(YEAR FROM start_date)::text WHERE name ~ '^Season [0-9]+$' AND name !~ '^Season (19|20)[0-9]{2}$';
