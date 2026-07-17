@@ -99,6 +99,44 @@ const Header = () => {
                 </SelectContent>
               </Select>
             )}
+            {isAdmin && (
+              <>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    setSeasonDialogMode("create");
+                    setSeasonDialogOpen(true);
+                  }}
+                  title={t("newSeason")}
+                >
+                  <Plus className="w-5 h-5" />
+                </Button>
+                {season && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => {
+                        setSeasonDialogMode("edit");
+                        setSeasonDialogOpen(true);
+                      }}
+                      title={t("editSeason")}
+                    >
+                      <Pencil className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setDeleteOpen(true)}
+                      title={t("deleteSeason")}
+                    >
+                      <Trash2 className="w-4 h-4 text-destructive" />
+                    </Button>
+                  </>
+                )}
+              </>
+            )}
             <LanguageSwitcher />
             {!loading && (
               <>
