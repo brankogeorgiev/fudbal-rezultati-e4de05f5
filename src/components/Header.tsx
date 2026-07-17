@@ -1,21 +1,32 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Trophy, User, LogOut, Shield, ArrowLeftRight } from "lucide-react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { Trophy, User, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
 import AuthDialog from "@/components/AuthDialog";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { useSeason } from "@/hooks/useSeasons";
+import { useSeason, useSeasons } from "@/hooks/useSeasons";
 import { toast } from "sonner";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { seasonId } = useParams<{ seasonId: string }>();
   const { data: season } = useSeason(seasonId);
+  const { data: seasons } = useSeasons();
   const [authOpen, setAuthOpen] = useState(false);
   const { user, isAdmin, loading, signOut } = useAuth();
   const { t } = useLanguage();
+
+  const handleSeasonChange = (newId: string) => {
+    if (!newId || newId === seasonId) return;
+    // Preserve current sub-path after /s/:seasonId (e.g. /statistics, /players)
+    const match = location.pathname.match(/^\/s\/[^/]+(\/.*)?$/);
+    const suffix = match?.[1] ?? "";
+    navigate(`/s/${newId}${suffix}`);
+  };
 
   const handleSignOut = async () => {
     const { error } = await signOut();
@@ -43,15 +54,22 @@ const Header = () => {
           </div>
 
           <div className="flex items-center gap-1">
-            {seasonId && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => navigate("/")}
-                title={t("changeSeason")}
-              >
-                <ArrowLeftRight className="w-5 h-5" />
-              </Button>
+            {seasonId && seasons && seasons.length > 0 && (
+              <Select value={seasonId} onValueChange={handleSeasonChange}>
+                <SelectTrigger
+                  className="h-9 w-auto gap-1.5 border-border/60 bg-background/60 px-2.5 text-xs font-medium"
+                  title={t("changeSeason")}
+                >
+                  <SelectValue placeholder={season?.name ?? t("changeSeason")} />
+                </SelectTrigger>
+                <SelectContent align="end">
+                  {seasons.map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             )}
             <LanguageSwitcher />
             {!loading && (
