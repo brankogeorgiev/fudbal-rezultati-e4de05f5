@@ -60,7 +60,7 @@ const Header = () => {
                   className="h-9 w-auto gap-1.5 border-border/60 bg-background/60 px-2.5 text-xs font-medium"
                   title={t("changeSeason")}
                 >
-                  <SelectValue placeholder={season?.name ?? t("season")} />
+                  <SelectValue placeholder={season?.name ?? t("changeSeason")} />
                 </SelectTrigger>
                 <SelectContent align="end">
                   {seasons.map((s) => (
