@@ -1,21 +1,32 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Trophy, User, LogOut, Shield, ArrowLeftRight } from "lucide-react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { Trophy, User, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
 import AuthDialog from "@/components/AuthDialog";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/i18n/LanguageContext";
-import { useSeason } from "@/hooks/useSeasons";
+import { useSeason, useSeasons } from "@/hooks/useSeasons";
 import { toast } from "sonner";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { seasonId } = useParams<{ seasonId: string }>();
   const { data: season } = useSeason(seasonId);
+  const { data: seasons } = useSeasons();
   const [authOpen, setAuthOpen] = useState(false);
   const { user, isAdmin, loading, signOut } = useAuth();
   const { t } = useLanguage();
+
+  const handleSeasonChange = (newId: string) => {
+    if (!newId || newId === seasonId) return;
+    // Preserve current sub-path after /s/:seasonId (e.g. /statistics, /players)
+    const match = location.pathname.match(/^\/s\/[^/]+(\/.*)?$/);
+    const suffix = match?.[1] ?? "";
+    navigate(`/s/${newId}${suffix}`);
+  };
 
   const handleSignOut = async () => {
     const { error } = await signOut();
