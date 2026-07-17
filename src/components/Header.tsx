@@ -54,15 +54,22 @@ const Header = () => {
           </div>
 
           <div className="flex items-center gap-1">
-            {seasonId && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => navigate("/")}
-                title={t("changeSeason")}
-              >
-                <ArrowLeftRight className="w-5 h-5" />
-              </Button>
+            {seasonId && seasons && seasons.length > 0 && (
+              <Select value={seasonId} onValueChange={handleSeasonChange}>
+                <SelectTrigger
+                  className="h-9 w-auto gap-1.5 border-border/60 bg-background/60 px-2.5 text-xs font-medium"
+                  title={t("changeSeason")}
+                >
+                  <SelectValue placeholder={season?.name ?? t("season")} />
+                </SelectTrigger>
+                <SelectContent align="end">
+                  {seasons.map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             )}
             <LanguageSwitcher />
             {!loading && (
