@@ -183,8 +183,10 @@ const Landing = () => {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         editSeason={editTarget}
+        defaultYear={nextSeasonYear}
         onSave={handleSave}
       />
+
       <DeleteConfirmDialog
         open={!!deleteTarget}
         onOpenChange={(o) => !o && setDeleteTarget(null)}
