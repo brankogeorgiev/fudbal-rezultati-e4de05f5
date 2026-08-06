@@ -197,16 +197,17 @@ const Header = () => {
       <SeasonDialog
         open={seasonDialogOpen}
         onOpenChange={setSeasonDialogOpen}
-        editSeason={seasonDialogMode === "edit" ? season ?? null : null}
+        editSeason={editTarget}
         onSave={handleSaveSeason}
       />
       <DeleteConfirmDialog
-        open={deleteOpen}
-        onOpenChange={setDeleteOpen}
+        open={!!deleteTarget}
+        onOpenChange={(o) => !o && setDeleteTarget(null)}
         onConfirm={handleDeleteSeason}
         title={t("deleteSeason")}
         description={t("deleteSeasonDescription")}
       />
+
     </>
   );
 };
