@@ -36,6 +36,12 @@ const Landing = () => {
 
   const todayIso = new Date().toISOString().slice(0, 10);
 
+  const latestYear = seasons?.length
+    ? Math.max(...seasons.map((s) => parseISO(s.start_date).getFullYear()))
+    : null;
+  const nextSeasonYear = latestYear ? latestYear + 1 : new Date().getFullYear();
+
+
   const handleSave = (data: { name: string; startDate: string; endDate: string }) => {
     if (editTarget) {
       updateSeason.mutate({ id: editTarget.id, ...data });
