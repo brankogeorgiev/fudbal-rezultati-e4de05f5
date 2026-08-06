@@ -15,8 +15,10 @@ import {
   useCreateSeason,
   useUpdateSeason,
   useDeleteSeason,
+  type Season,
 } from "@/hooks/useSeasons";
 import { toast } from "sonner";
+
 
 const Header = () => {
   const navigate = useNavigate();
@@ -25,14 +27,16 @@ const Header = () => {
   const { data: season } = useSeason(seasonId);
   const { data: seasons } = useSeasons();
   const [authOpen, setAuthOpen] = useState(false);
+  const [selectOpen, setSelectOpen] = useState(false);
   const [seasonDialogOpen, setSeasonDialogOpen] = useState(false);
-  const [seasonDialogMode, setSeasonDialogMode] = useState<"create" | "edit">("create");
-  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<Season | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<Season | null>(null);
   const { user, isAdmin, loading, signOut } = useAuth();
   const { t } = useLanguage();
   const createSeason = useCreateSeason();
   const updateSeason = useUpdateSeason();
   const deleteSeason = useDeleteSeason();
+
 
   const handleSeasonChange = (newId: string) => {
     if (!newId || newId === seasonId) return;
