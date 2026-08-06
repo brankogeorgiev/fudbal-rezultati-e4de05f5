@@ -91,7 +91,12 @@ const Header = () => {
 
           <div className="flex items-center gap-1">
             {seasonId && seasons && seasons.length > 0 && (
-              <Select value={seasonId} onValueChange={handleSeasonChange}>
+              <Select
+                open={selectOpen}
+                onOpenChange={setSelectOpen}
+                value={seasonId}
+                onValueChange={handleSeasonChange}
+              >
                 <SelectTrigger
                   className="h-9 w-auto gap-1.5 border-border/60 bg-background/60 px-2.5 text-xs font-medium"
                   title={t("changeSeason")}
@@ -100,51 +105,66 @@ const Header = () => {
                 </SelectTrigger>
                 <SelectContent align="end">
                   {seasons.map((s) => (
-                    <SelectItem key={s.id} value={s.id}>
-                      {s.name}
-                    </SelectItem>
+                    <div key={s.id} className="flex items-center gap-1 pr-1">
+                      <SelectItem value={s.id} className="flex-1">
+                        {s.name}
+                      </SelectItem>
+                      {isAdmin && (
+                        <>
+                          <button
+                            type="button"
+                            className="p-1 rounded-sm text-muted-foreground hover:text-foreground hover:bg-accent"
+                            title={t("editSeason")}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEditTarget(s);
+                              setSelectOpen(false);
+                              setSeasonDialogOpen(true);
+                            }}
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            type="button"
+                            className="p-1 rounded-sm text-destructive hover:bg-accent"
+                            title={t("deleteSeason")}
+                            onPointerDown={(e) => e.stopPropagation()}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteTarget(s);
+                              setSelectOpen(false);
+                            }}
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </>
+                      )}
+                    </div>
                   ))}
+                  {isAdmin && (
+                    <>
+                      <div className="my-1 h-px bg-border" />
+                      <button
+                        type="button"
+                        className="flex w-full items-center gap-2 rounded-sm px-2 py-1.5 text-sm hover:bg-accent"
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditTarget(null);
+                          setSelectOpen(false);
+                          setSeasonDialogOpen(true);
+                        }}
+                      >
+                        <Plus className="w-4 h-4" />
+                        {t("newSeason")}
+                      </button>
+                    </>
+                  )}
                 </SelectContent>
               </Select>
             )}
-            {isAdmin && (
-              <>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => {
-                    setSeasonDialogMode("create");
-                    setSeasonDialogOpen(true);
-                  }}
-                  title={t("newSeason")}
-                >
-                  <Plus className="w-5 h-5" />
-                </Button>
-                {season && (
-                  <>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        setSeasonDialogMode("edit");
-                        setSeasonDialogOpen(true);
-                      }}
-                      title={t("editSeason")}
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setDeleteOpen(true)}
-                      title={t("deleteSeason")}
-                    >
-                      <Trash2 className="w-4 h-4 text-destructive" />
-                    </Button>
-                  </>
-                )}
-              </>
-            )}
+
             <LanguageSwitcher />
             {!loading && (
               <>
