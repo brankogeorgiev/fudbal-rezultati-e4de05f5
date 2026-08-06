@@ -121,8 +121,10 @@ const AdminSeasons = () => {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         editSeason={editSeason}
+        defaultYear={nextSeasonYear}
         onSave={handleSave}
       />
+
 
       <DeleteConfirmDialog
         open={deleteOpen}
