@@ -32,6 +32,12 @@ const AdminSeasons = () => {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
+  const latestYear = seasons?.length
+    ? Math.max(...seasons.map((s) => parseISO(s.start_date).getFullYear()))
+    : null;
+  const nextSeasonYear = latestYear ? latestYear + 1 : new Date().getFullYear();
+
+
   useEffect(() => {
     if (!authLoading && !isAdmin) navigate("/");
   }, [authLoading, isAdmin, navigate]);
@@ -121,8 +127,10 @@ const AdminSeasons = () => {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         editSeason={editSeason}
+        defaultYear={nextSeasonYear}
         onSave={handleSave}
       />
+
 
       <DeleteConfirmDialog
         open={deleteOpen}
