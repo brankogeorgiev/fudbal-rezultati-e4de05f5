@@ -21,12 +21,14 @@ interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   editSeason: Season | null;
+  /** Year used to prefill Jan 1 – Dec 31 defaults for a new season. */
+  defaultYear?: number;
   onSave: (data: { name: string; startDate: string; endDate: string }) => void;
 }
 
 const toIso = (d: Date) => format(d, "yyyy-MM-dd");
 
-const SeasonDialog = ({ open, onOpenChange, editSeason, onSave }: Props) => {
+const SeasonDialog = ({ open, onOpenChange, editSeason, defaultYear, onSave }: Props) => {
   const { t } = useLanguage();
   const [name, setName] = useState("");
   const [startDate, setStartDate] = useState<Date | undefined>();
@@ -34,11 +36,19 @@ const SeasonDialog = ({ open, onOpenChange, editSeason, onSave }: Props) => {
 
   useEffect(() => {
     if (open) {
-      setName(editSeason?.name ?? "");
-      setStartDate(editSeason ? new Date(editSeason.start_date) : undefined);
-      setEndDate(editSeason ? new Date(editSeason.end_date) : undefined);
+      if (editSeason) {
+        setName(editSeason.name);
+        setStartDate(new Date(editSeason.start_date));
+        setEndDate(new Date(editSeason.end_date));
+      } else {
+        const year = defaultYear ?? new Date().getFullYear();
+        setName(`Season ${year}`);
+        setStartDate(new Date(year, 0, 1));
+        setEndDate(new Date(year, 11, 31));
+      }
     }
-  }, [open, editSeason]);
+  }, [open, editSeason, defaultYear]);
+
 
   const canSave = name.trim() && startDate && endDate && endDate >= startDate;
 
