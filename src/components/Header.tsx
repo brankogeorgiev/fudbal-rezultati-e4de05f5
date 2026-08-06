@@ -46,19 +46,23 @@ const Header = () => {
   };
 
   const handleSaveSeason = (data: { name: string; startDate: string; endDate: string }) => {
-    if (seasonDialogMode === "edit" && season) {
-      updateSeason.mutate({ id: season.id, ...data });
+    if (editTarget) {
+      updateSeason.mutate({ id: editTarget.id, ...data });
     } else {
       createSeason.mutate(data);
     }
   };
 
   const handleDeleteSeason = () => {
-    if (!season) return;
-    deleteSeason.mutate(season.id, {
-      onSuccess: () => navigate("/"),
+    if (!deleteTarget) return;
+    const wasActive = deleteTarget.id === seasonId;
+    deleteSeason.mutate(deleteTarget.id, {
+      onSuccess: () => {
+        if (wasActive) navigate("/");
+      },
     });
   };
+
 
   const handleSignOut = async () => {
     const { error } = await signOut();
