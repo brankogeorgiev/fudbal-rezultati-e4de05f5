@@ -48,6 +48,8 @@ export const translations = {
     noOwnGoals: "Нема автоголови",
     showMore: "Прикажи повеќе",
     goalsPerMatch: "гол/натпревар",
+    sortByGoals: "По голови",
+    sortByPerMatch: "По голови/натпревар",
     seasonOverlap: "Датумите се преклопуваат со постоечка сезона",
     showLess: "Прикажи помалку",
     newExport: "Нов извоз",
