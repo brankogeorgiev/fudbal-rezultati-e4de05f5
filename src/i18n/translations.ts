@@ -182,6 +182,7 @@ export const translations = {
     cannotRemoveOwnAdmin: "Не можете да ја отстраните сопствената администраторска улога",
 
     // Seasons
+    home: "Дома",
     chooseSeason: "Избери сезона",
     chooseSeasonSubtitle: "Изберете сезона за да ги видите резултатите и статистиките",
     seasons: "Сезони",
@@ -380,6 +381,7 @@ export const translations = {
     noOtherUsers: "No other users",
     cannotRemoveOwnAdmin: "You cannot remove your own admin role",
 
+    home: "Home",
     // Seasons
     chooseSeason: "Choose a season",
     chooseSeasonSubtitle: "Select a season to view its results and statistics",
