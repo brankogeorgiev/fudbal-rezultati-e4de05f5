@@ -246,9 +246,26 @@ const Statistics = () => {
     });
 
     return Array.from(scorerMap.entries())
-      .map(([id, data]) => ({ id, ...data }))
+      .map(([id, data]) => {
+        const played = appearances.get(id) || 0;
+        return {
+          id,
+          ...data,
+          played,
+          perMatch: played > 0 ? data.goals / played : 0,
+        };
+      })
       .sort((a, b) => b.goals - a.goals);
-  }, [allGoals, filteredMatches]);
+  }, [allGoals, filteredMatches, appearances]);
+
+  // Own goals sorted by the selected metric
+  const sortedOwnGoalScorers = useMemo(() => {
+    return [...ownGoalScorers].sort((a, b) =>
+      ownGoalSort === "perMatch"
+        ? b.perMatch - a.perMatch || b.goals - a.goals
+        : b.goals - a.goals || b.perMatch - a.perMatch
+    );
+  }, [ownGoalScorers, ownGoalSort]);
 
   // Head-to-head stats
   const headToHead = useMemo(() => {
