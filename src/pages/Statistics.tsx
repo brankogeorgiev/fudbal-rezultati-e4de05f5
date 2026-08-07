@@ -81,6 +81,7 @@ const Statistics = () => {
   const [selectedTeam2, setSelectedTeam2] = useState<string>("all");
   const [showAllScorers, setShowAllScorers] = useState(false);
   const [showAllOwnGoals, setShowAllOwnGoals] = useState(false);
+  const [scorerSort, setScorerSort] = useState<"goals" | "perMatch">("goals");
 
   const { data: season } = useCurrentSeason();
   const seasonRange = season
@@ -215,6 +216,15 @@ const Statistics = () => {
       })
       .sort((a, b) => b.goals - a.goals);
   }, [allGoals, players, filteredMatches, appearances]);
+
+  // Top scorers sorted by the selected metric
+  const sortedScorers = useMemo(() => {
+    return [...topScorers].sort((a, b) =>
+      scorerSort === "perMatch"
+        ? b.perMatch - a.perMatch || b.goals - a.goals
+        : b.goals - a.goals || b.perMatch - a.perMatch
+    );
+  }, [topScorers, scorerSort]);
 
   // Calculate own goals
   const ownGoalScorers = useMemo(() => {
@@ -539,21 +549,33 @@ const Statistics = () => {
             </Card>
 
             {/* Top Scorers */}
-            <Card>
-              <CardHeader className="pb-2">
+              <Card>
+              <CardHeader className="pb-2 flex flex-row items-center justify-between gap-2">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
                   <FootballIcon className="w-4 h-4 text-primary" />
                   {t("topScorers")}
                 </CardTitle>
+                <Select
+                  value={scorerSort}
+                  onValueChange={(v) => setScorerSort(v as "goals" | "perMatch")}
+                >
+                  <SelectTrigger className="h-8 w-auto gap-1 text-xs px-2">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="goals">{t("sortByGoals")}</SelectItem>
+                    <SelectItem value="perMatch">{t("sortByPerMatch")}</SelectItem>
+                  </SelectContent>
+                </Select>
               </CardHeader>
               <CardContent>
-                {topScorers.length === 0 ? (
+                {sortedScorers.length === 0 ? (
                   <p className="text-center text-muted-foreground py-4">
                     {t("noGoalsScored")}
                   </p>
                 ) : (
                   <div className="space-y-2">
-                    {(showAllScorers ? topScorers : topScorers.slice(0, 3)).map((scorer, index) => (
+                    {(showAllScorers ? sortedScorers : sortedScorers.slice(0, 3)).map((scorer, index) => (
                       <div
                         key={scorer.id}
                         className="flex items-center justify-between py-2 border-b border-border/50 last:border-0"
