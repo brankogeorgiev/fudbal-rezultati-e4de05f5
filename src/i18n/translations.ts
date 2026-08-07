@@ -252,6 +252,8 @@ export const translations = {
     noOwnGoals: "No own goals",
     showMore: "Show more",
     goalsPerMatch: "goals/match",
+    sortByGoals: "By goals",
+    sortByPerMatch: "By goals/match",
     seasonOverlap: "Dates overlap an existing season",
     showLess: "Show less",
     newExport: "New Export",
