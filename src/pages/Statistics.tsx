@@ -171,6 +171,19 @@ const Statistics = () => {
     return goal.is_own_goal === true;
   };
 
+  // Appearances per player within filtered matches
+  const appearances = useMemo(() => {
+    const map = new Map<string, number>();
+    if (!allMatchPlayers || !filteredMatches) return map;
+    const matchIds = new Set(filteredMatches.map((m) => m.id));
+    allMatchPlayers.forEach((mp) => {
+      if (matchIds.has(mp.match_id)) {
+        map.set(mp.player_id, (map.get(mp.player_id) || 0) + 1);
+      }
+    });
+    return map;
+  }, [allMatchPlayers, filteredMatches]);
+
   // Calculate top scorers (excluding own goals)
   const topScorers = useMemo(() => {
     if (!allGoals || !players || !filteredMatches) return [];
@@ -191,10 +204,17 @@ const Statistics = () => {
     });
 
     return Array.from(scorerMap.entries())
-      .map(([id, data]) => ({ id, ...data }))
-      .sort((a, b) => b.goals - a.goals)
-      .slice(0, 10);
-  }, [allGoals, players, filteredMatches]);
+      .map(([id, data]) => {
+        const played = appearances.get(id) || 0;
+        return {
+          id,
+          ...data,
+          played,
+          perMatch: played > 0 ? data.goals / played : 0,
+        };
+      })
+      .sort((a, b) => b.goals - a.goals);
+  }, [allGoals, players, filteredMatches, appearances]);
 
   // Calculate own goals
   const ownGoalScorers = useMemo(() => {
@@ -217,8 +237,7 @@ const Statistics = () => {
 
     return Array.from(scorerMap.entries())
       .map(([id, data]) => ({ id, ...data }))
-      .sort((a, b) => b.goals - a.goals)
-      .slice(0, 10);
+      .sort((a, b) => b.goals - a.goals);
   }, [allGoals, filteredMatches]);
 
   // Head-to-head stats
@@ -554,9 +573,15 @@ const Statistics = () => {
                           >
                             {index + 1}
                           </span>
-                          <p className="font-medium text-foreground">
-                            {scorer.name}
-                          </p>
+                          <div>
+                            <p className="font-medium text-foreground">
+                              {scorer.name}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {scorer.perMatch.toFixed(2)} {t("goalsPerMatch")} ·{" "}
+                              {scorer.played} {t("matches")}
+                            </p>
+                          </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-xl font-bold text-primary">
