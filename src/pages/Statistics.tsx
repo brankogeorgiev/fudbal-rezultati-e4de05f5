@@ -217,6 +217,15 @@ const Statistics = () => {
       .sort((a, b) => b.goals - a.goals);
   }, [allGoals, players, filteredMatches, appearances]);
 
+  // Top scorers sorted by the selected metric
+  const sortedScorers = useMemo(() => {
+    return [...topScorers].sort((a, b) =>
+      scorerSort === "perMatch"
+        ? b.perMatch - a.perMatch || b.goals - a.goals
+        : b.goals - a.goals || b.perMatch - a.perMatch
+    );
+  }, [topScorers, scorerSort]);
+
   // Calculate own goals
   const ownGoalScorers = useMemo(() => {
     if (!allGoals || !filteredMatches) return [];
