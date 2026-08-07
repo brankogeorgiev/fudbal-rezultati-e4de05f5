@@ -15,7 +15,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/i18n/LanguageContext";
-import type { Season } from "@/hooks/useSeasons";
+import { useSeasons, type Season } from "@/hooks/useSeasons";
 
 interface Props {
   open: boolean;
@@ -50,7 +50,24 @@ const SeasonDialog = ({ open, onOpenChange, editSeason, defaultYear, onSave }: P
   }, [open, editSeason, defaultYear]);
 
 
-  const canSave = name.trim() && startDate && endDate && endDate >= startDate;
+  const { data: seasons } = useSeasons();
+
+  const overlapSeason = (() => {
+    if (!startDate || !endDate || !seasons) return null;
+    const s = toIso(startDate);
+    const e = toIso(endDate);
+    return (
+      seasons.find(
+        (season) =>
+          season.id !== editSeason?.id &&
+          season.start_date <= e &&
+          season.end_date >= s
+      ) || null
+    );
+  })();
+
+  const canSave =
+    !!name.trim() && !!startDate && !!endDate && endDate >= startDate && !overlapSeason;
 
   const handleSave = () => {
     if (!canSave || !startDate || !endDate) return;
@@ -128,6 +145,13 @@ const SeasonDialog = ({ open, onOpenChange, editSeason, defaultYear, onSave }: P
               </Popover>
             </div>
           </div>
+          {overlapSeason && (
+            <p className="text-sm text-destructive">
+              {t("seasonOverlap")}: {overlapSeason.name} (
+              {format(new Date(overlapSeason.start_date), "PP")} –{" "}
+              {format(new Date(overlapSeason.end_date), "PP")})
+            </p>
+          )}
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
