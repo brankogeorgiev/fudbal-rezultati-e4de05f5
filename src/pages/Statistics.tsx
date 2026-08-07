@@ -82,6 +82,7 @@ const Statistics = () => {
   const [showAllScorers, setShowAllScorers] = useState(false);
   const [showAllOwnGoals, setShowAllOwnGoals] = useState(false);
   const [scorerSort, setScorerSort] = useState<"goals" | "perMatch">("goals");
+  const [ownGoalSort, setOwnGoalSort] = useState<"goals" | "perMatch">("goals");
 
   const { data: season } = useCurrentSeason();
   const seasonRange = season
@@ -246,9 +247,26 @@ const Statistics = () => {
     });
 
     return Array.from(scorerMap.entries())
-      .map(([id, data]) => ({ id, ...data }))
+      .map(([id, data]) => {
+        const played = appearances.get(id) || 0;
+        return {
+          id,
+          ...data,
+          played,
+          perMatch: played > 0 ? data.goals / played : 0,
+        };
+      })
       .sort((a, b) => b.goals - a.goals);
-  }, [allGoals, filteredMatches]);
+  }, [allGoals, filteredMatches, appearances]);
+
+  // Own goals sorted by the selected metric
+  const sortedOwnGoalScorers = useMemo(() => {
+    return [...ownGoalScorers].sort((a, b) =>
+      ownGoalSort === "perMatch"
+        ? b.perMatch - a.perMatch || b.goals - a.goals
+        : b.goals - a.goals || b.perMatch - a.perMatch
+    );
+  }, [ownGoalScorers, ownGoalSort]);
 
   // Head-to-head stats
   const headToHead = useMemo(() => {
@@ -638,20 +656,32 @@ const Statistics = () => {
 
             {/* Own Goals */}
             <Card className="border-destructive/30">
-              <CardHeader className="pb-2">
+              <CardHeader className="pb-2 flex flex-row items-center justify-between gap-2">
                 <CardTitle className="text-sm font-medium flex items-center gap-2">
                   <FootballIcon className="w-4 h-4 text-destructive" />
                   {t("ownGoals")}
                 </CardTitle>
+                <Select
+                  value={ownGoalSort}
+                  onValueChange={(v) => setOwnGoalSort(v as "goals" | "perMatch")}
+                >
+                  <SelectTrigger className="h-8 w-auto gap-1 text-xs px-2">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="goals">{t("sortByGoals")}</SelectItem>
+                    <SelectItem value="perMatch">{t("sortByPerMatch")}</SelectItem>
+                  </SelectContent>
+                </Select>
               </CardHeader>
               <CardContent>
-                {ownGoalScorers.length === 0 ? (
+                {sortedOwnGoalScorers.length === 0 ? (
                   <p className="text-center text-muted-foreground py-4">
                     {t("noOwnGoals")}
                   </p>
                 ) : (
                   <div className="space-y-2">
-                    {(showAllOwnGoals ? ownGoalScorers : ownGoalScorers.slice(0, 3)).map((scorer, index) => (
+                    {(showAllOwnGoals ? sortedOwnGoalScorers : sortedOwnGoalScorers.slice(0, 3)).map((scorer, index) => (
                       <div
                         key={scorer.id}
                         className="flex items-center justify-between py-2 border-b border-border/50 last:border-0"
@@ -660,21 +690,31 @@ const Statistics = () => {
                           <span className="text-lg font-bold w-6 text-destructive">
                             {index + 1}
                           </span>
-                          <p className="font-medium text-foreground">
-                            {scorer.name}
-                          </p>
+                          <div>
+                            <p className="font-medium text-foreground">
+                              {scorer.name}
+                            </p>
+                            {ownGoalSort === "perMatch" && (
+                              <p className="text-xs text-muted-foreground">
+                                {scorer.goals} OG · {scorer.played}{" "}
+                                {t("matches")}
+                              </p>
+                            )}
+                          </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-xl font-bold text-destructive">
-                            {scorer.goals}
+                            {ownGoalSort === "perMatch"
+                              ? scorer.perMatch.toFixed(2)
+                              : scorer.goals}
                           </span>
                           <span className="text-xs text-muted-foreground">
-                            OG
+                            {ownGoalSort === "perMatch" ? t("goalsPerMatch") : "OG"}
                           </span>
                         </div>
                       </div>
                     ))}
-                    {ownGoalScorers.length > 3 && (
+                    {sortedOwnGoalScorers.length > 3 && (
                       <Button
                         variant="default"
                         size="sm"
