@@ -40,17 +40,21 @@ const Header = () => {
     <>
       <header className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border/50">
         <div className="container max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <Trophy className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-lg text-foreground">{t("football")}</h1>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                {season?.name ?? t("resultsSystem")}
-              </p>
-            </div>
-          </div>
+            <button
+              className="flex items-center gap-3 cursor-pointer text-left"
+              onClick={() => navigate("/")}
+              title={t("home")}
+            >
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Trophy className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <h1 className="font-display font-bold text-lg text-foreground">{t("football")}</h1>
+                <p className="text-xs text-muted-foreground uppercase tracking-wider">
+                  {season?.name ?? t("resultsSystem")}
+                </p>
+              </div>
+            </button>
 
           <div className="flex items-center gap-1">
             {seasonId && seasons && seasons.length > 0 && (
