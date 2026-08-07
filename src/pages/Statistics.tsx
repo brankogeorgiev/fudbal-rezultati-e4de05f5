@@ -599,18 +599,24 @@ const Statistics = () => {
                             <p className="font-medium text-foreground">
                               {scorer.name}
                             </p>
-                            <p className="text-xs text-muted-foreground">
-                              {scorer.perMatch.toFixed(2)} {t("goalsPerMatch")} ·{" "}
-                              {scorer.played} {t("matches")}
-                            </p>
+                            {scorerSort === "perMatch" && (
+                              <p className="text-xs text-muted-foreground">
+                                {scorer.goals} {t("goals")} · {scorer.played}{" "}
+                                {t("matches")}
+                              </p>
+                            )}
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-xl font-bold text-primary">
-                            {scorer.goals}
+                            {scorerSort === "perMatch"
+                              ? scorer.perMatch.toFixed(2)
+                              : scorer.goals}
                           </span>
                           <span className="text-xs text-muted-foreground">
-                            {t("goals")}
+                            {scorerSort === "perMatch"
+                              ? t("goalsPerMatch")
+                              : t("goals")}
                           </span>
                         </div>
                       </div>
