@@ -31,8 +31,8 @@ const BottomNav = () => {
   const visibleItems = navItems.filter((item) => !item.adminOnly || isAdmin);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border/50 z-50">
-      <div className="container max-w-lg mx-auto px-4">
+    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border/50 z-50 bottom-nav">
+      <div className="w-full max-w-lg mx-auto px-4">
         <div className="flex items-center justify-around py-2">
           {visibleItems.map((item) => {
             const to = `${base}${item.suffix}`;
