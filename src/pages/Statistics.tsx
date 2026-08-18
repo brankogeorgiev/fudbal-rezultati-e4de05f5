@@ -335,7 +335,7 @@ const Statistics = () => {
         {/* Filters */}
         <Card className="mb-6">
           <CardHeader
-            className="pb-3 cursor-pointer select-none"
+            className="px-6 py-3 cursor-pointer select-none"
             onClick={() => setFiltersExpanded((prev) => !prev)}
           >
             <CardTitle className="text-sm font-medium flex items-center justify-between">
