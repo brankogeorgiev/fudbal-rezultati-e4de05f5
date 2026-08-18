@@ -83,6 +83,7 @@ const Statistics = () => {
   const [showAllOwnGoals, setShowAllOwnGoals] = useState(false);
   const [scorerSort, setScorerSort] = useState<"goals" | "perMatch">("goals");
   const [ownGoalSort, setOwnGoalSort] = useState<"goals" | "perMatch">("goals");
+  const [filtersExpanded, setFiltersExpanded] = useState(true);
 
   const { data: season } = useCurrentSeason();
   const seasonRange = season
