@@ -187,6 +187,7 @@ export const translations = {
 
     // Seasons
     home: "Дома",
+    moreActions: "Повеќе акции",
     chooseSeason: "Избери сезона",
     chooseSeasonSubtitle: "Изберете сезона за да ги видите резултатите и статистиките",
     seasons: "Сезони",
@@ -390,6 +391,7 @@ export const translations = {
     cannotRemoveOwnAdmin: "You cannot remove your own admin role",
 
     home: "Home",
+    moreActions: "More actions",
     // Seasons
     chooseSeason: "Choose a season",
     chooseSeasonSubtitle: "Select a season to view its results and statistics",
