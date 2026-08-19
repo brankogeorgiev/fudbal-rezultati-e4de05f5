@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Trophy, User, LogOut, Shield } from "lucide-react";
+import { Trophy, User, LogOut, Shield, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/useAuth";
 import AuthDialog from "@/components/AuthDialog";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -17,6 +18,7 @@ const Header = () => {
   const { data: season } = useSeason(seasonId);
   const { data: seasons } = useSeasons();
   const [authOpen, setAuthOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { user, isAdmin, loading, signOut } = useAuth();
   const { t } = useLanguage();
 
@@ -35,6 +37,25 @@ const Header = () => {
       toast.success(t("signedOutSuccessfully"));
     }
   };
+
+  const seasonSelect =
+    seasonId && seasons && seasons.length > 0 ? (
+      <Select value={seasonId} onValueChange={handleSeasonChange}>
+        <SelectTrigger
+          className="h-9 w-full gap-1.5 border-border/60 bg-background/60 px-2.5 text-xs font-medium sm:w-auto"
+          title={t("changeSeason")}
+        >
+          <SelectValue placeholder={season?.name ?? t("changeSeason")} />
+        </SelectTrigger>
+        <SelectContent align="end">
+          {seasons.map((s) => (
+            <SelectItem key={s.id} value={s.id}>
+              {s.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    ) : null;
 
   return (
     <>
@@ -56,24 +77,9 @@ const Header = () => {
               </div>
             </button>
 
-          <div className="flex items-center gap-1">
-            {seasonId && seasons && seasons.length > 0 && (
-              <Select value={seasonId} onValueChange={handleSeasonChange}>
-                <SelectTrigger
-                  className="h-9 w-auto gap-1.5 border-border/60 bg-background/60 px-2.5 text-xs font-medium"
-                  title={t("changeSeason")}
-                >
-                  <SelectValue placeholder={season?.name ?? t("changeSeason")} />
-                </SelectTrigger>
-                <SelectContent align="end">
-                  {seasons.map((s) => (
-                    <SelectItem key={s.id} value={s.id}>
-                      {s.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
+          {/* Desktop / tablet controls */}
+          <div className="hidden sm:flex items-center gap-1">
+            {seasonSelect}
             <LanguageSwitcher />
             {!loading && (
               <>
@@ -98,6 +104,70 @@ const Header = () => {
                 )}
               </>
             )}
+          </div>
+
+          {/* Mobile hamburger */}
+          <div className="sm:hidden">
+            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" aria-label={t("menu")}>
+                  <Menu className="w-5 h-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-72">
+                <SheetHeader>
+                  <SheetTitle>{t("menu")}</SheetTitle>
+                </SheetHeader>
+                <div className="mt-6 flex flex-col gap-3">
+                  {seasonSelect}
+                  <div className="flex items-center justify-between gap-2">
+                    <LanguageSwitcher />
+                  </div>
+                  {!loading && (
+                    <>
+                      {isAdmin && (
+                        <Button
+                          variant="outline"
+                          className="justify-start gap-2"
+                          onClick={() => {
+                            setMenuOpen(false);
+                            navigate("/admin/users");
+                          }}
+                        >
+                          <Shield className="w-4 h-4 text-primary" />
+                          {t("adminPanel")}
+                        </Button>
+                      )}
+                      {user ? (
+                        <Button
+                          variant="outline"
+                          className="justify-start gap-2"
+                          onClick={() => {
+                            setMenuOpen(false);
+                            handleSignOut();
+                          }}
+                        >
+                          <LogOut className="w-4 h-4" />
+                          {t("signOut")}
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          className="justify-start gap-2"
+                          onClick={() => {
+                            setMenuOpen(false);
+                            setAuthOpen(true);
+                          }}
+                        >
+                          <User className="w-4 h-4" />
+                          {t("signIn")}
+                        </Button>
+                      )}
+                    </>
+                  )}
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </header>
