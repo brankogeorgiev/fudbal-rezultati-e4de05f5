@@ -385,6 +385,7 @@ export const translations = {
     noAdmins: "No admins",
     adminInfo: "Admins can add, edit, and delete matches and players. New users must first sign up before they can be assigned an admin role.",
     adminPanel: "Admin Panel",
+    menu: "Menu",
     allUsers: "All Users",
     makeAdmin: "Make Admin",
     noOtherUsers: "No other users",
