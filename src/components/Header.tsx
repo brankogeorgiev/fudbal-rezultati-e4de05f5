@@ -25,7 +25,7 @@ const Header = () => {
   const { data: seasons } = useSeasons();
   const [authOpen, setAuthOpen] = useState(false);
   const { user, isAdmin, loading, signOut } = useAuth();
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
 
   const handleSeasonChange = (newId: string) => {
     if (!newId || newId === seasonId) return;
