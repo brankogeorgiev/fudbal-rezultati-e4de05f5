@@ -1,11 +1,17 @@
 import { useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Trophy, User, LogOut, Shield } from "lucide-react";
+import { Trophy, User, LogOut, Shield, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/hooks/useAuth";
 import AuthDialog from "@/components/AuthDialog";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useLanguage } from "@/i18n/LanguageContext";
 import { useSeason, useSeasons } from "@/hooks/useSeasons";
 import { toast } from "sonner";
