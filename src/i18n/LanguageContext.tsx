@@ -50,5 +50,3 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useLanguage = () => useContext(LanguageContext);
-
-};
