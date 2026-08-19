@@ -42,7 +42,7 @@ const Header = () => {
     seasonId && seasons && seasons.length > 0 ? (
       <Select value={seasonId} onValueChange={handleSeasonChange}>
         <SelectTrigger
-          className="h-9 w-36 gap-1.5 border-border/60 bg-background/60 px-2.5 text-xs font-medium sm:w-auto"
+          className="h-9 w-full gap-1.5 border-border/60 bg-background/60 px-2.5 text-xs font-medium sm:w-auto"
           title={t("changeSeason")}
         >
           <SelectValue placeholder={season?.name ?? t("changeSeason")} />
