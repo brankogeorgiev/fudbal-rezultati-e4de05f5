@@ -72,10 +72,17 @@ const Header = () => {
               <div>
                 <h1 className="font-display font-bold text-lg text-foreground">{t("football")}</h1>
                 <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                  {season?.name ?? t("resultsSystem")}
+                  {t("resultsSystem")}
                 </p>
               </div>
             </button>
+
+          {/* Mobile season label */}
+          {seasonId && season && (
+            <span className="sm:hidden text-xs text-muted-foreground uppercase tracking-wider truncate max-w-[120px]">
+              {season.name}
+            </span>
+          )}
 
           {/* Desktop / tablet controls */}
           <div className="hidden sm:flex items-center gap-1">
