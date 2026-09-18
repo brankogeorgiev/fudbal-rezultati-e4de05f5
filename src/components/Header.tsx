@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Trophy, User, LogOut, Shield, Menu } from "lucide-react";
+import { Trophy, User, LogOut, Shield, Menu, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -86,6 +86,14 @@ const Header = () => {
 
           {/* Desktop / tablet controls */}
           <div className="hidden sm:flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/seasons")}
+              title={t("chooseSeason")}
+            >
+              <LayoutGrid className="w-5 h-5" />
+            </Button>
             {seasonSelect}
             <LanguageSwitcher />
             {!loading && (
@@ -126,6 +134,17 @@ const Header = () => {
                   <SheetTitle>{t("menu")}</SheetTitle>
                 </SheetHeader>
                 <div className="mt-6 flex flex-col gap-3">
+                  <Button
+                    variant="outline"
+                    className="justify-start gap-2"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      navigate("/seasons");
+                    }}
+                  >
+                    <LayoutGrid className="w-4 h-4" />
+                    {t("chooseSeason")}
+                  </Button>
                   {seasonSelect}
                   <div className="flex items-center justify-between gap-2">
                     <LanguageSwitcher />
