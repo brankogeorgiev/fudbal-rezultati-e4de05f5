@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/i18n/LanguageContext";
 import Landing from "./pages/Landing";
+import HomeRedirect from "./pages/HomeRedirect";
 import Index from "./pages/Index";
 import Players from "./pages/Players";
 import Statistics from "./pages/Statistics";
@@ -25,7 +26,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Landing />} />
+            <Route path="/" element={<HomeRedirect />} />
+            <Route path="/seasons" element={<Landing />} />
             <Route path="/s/:seasonId" element={<Index />} />
             <Route path="/s/:seasonId/match/:id" element={<MatchDetails />} />
             <Route path="/s/:seasonId/players" element={<Players />} />
